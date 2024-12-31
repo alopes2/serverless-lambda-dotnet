@@ -31,7 +31,6 @@ public class Function
     public async Task<Data?> FunctionHandler(Request request, ILambdaContext context)
     {
         var id = request?.PathParameters?.GetValueOrDefault("id");
-        context.Logger.LogInformation("Got ID {Request}", id);
 
         var getAction = new GetItemRequest
         {
@@ -48,6 +47,8 @@ public class Function
 
         try
         {
+            context.Logger.LogInformation("Sending GET request for ID {Request} on table {tableName}", id, tableName);
+
             var getItemResponse = await _client.GetItemAsync(getAction);
 
             context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
