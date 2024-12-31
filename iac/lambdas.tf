@@ -19,6 +19,7 @@ resource "aws_lambda_function" "lambda" {
   handler       = "Lambda::Lambda.Function::FunctionHandler"
   runtime       = "dotnet8"
   memory_size   = 512
+  timeout       = 30
 }
 
 data "archive_file" "dotnet_lambda_archive" {
