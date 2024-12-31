@@ -15,6 +15,7 @@ public class Function
     private const string tableName = "dotnet_data";
     private AmazonDynamoDBClient _client;
     private DynamoDBContext _dynamoDbContext;
+
     public Function()
     {
         _client = new AmazonDynamoDBClient();
@@ -29,18 +30,19 @@ public class Function
     /// <returns></returns>
     public async Task<Data?> FunctionHandler(Request request, ILambdaContext context)
     {
-        context.Logger.LogInformation("Got ID {Request}", request?.PathParameters?.GetValueOrDefault("id"));
+        var id = request?.PathParameters?.GetValueOrDefault("id");
+        context.Logger.LogInformation("Got ID {Request}", id);
 
         var getAction = new GetItemRequest
         {
             TableName = tableName,
-            Key = new Dictionary<string, AttributeValue>() {
+            Key = new Dictionary<string, AttributeValue>()
+            {
+                ["ID"] = new AttributeValue
                 {
-                    "ID",
-                    new AttributeValue {
-                        S = request?.PathParameters?.GetValueOrDefault("id")
-                    }
+                    S = id
                 }
+
             }
         };
 
