@@ -1,3 +1,6 @@
 namespace Lambda;
 
-public record Request(Dictionary<string, string> PathParameters);
+public class Request
+{
+    public Dictionary<string, string> PathParameters { get; set; }
+}
