@@ -27,29 +27,42 @@ public class Function
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    public async Task<Data> FunctionHandler(Request request, ILambdaContext context)
+    public async Task<Data?> FunctionHandler(Request request, ILambdaContext context)
     {
-        context.Logger.LogInformation("Got request {Request}", request);
+        context.Logger.LogInformation("Got ID {Request}", request?.PathParameters?.GetValueOrDefault("id"));
 
-        var getAction = new GetItemRequest(tableName, new Dictionary<string, AttributeValue>() {
-            {
-                "ID",
-                new AttributeValue {
-                    S = request?.PathParameters?.GetValueOrDefault("id")
-                 }
-             }
-        });
+        var getAction = new GetItemRequest
+        {
+            TableName = tableName,
+            Key = new Dictionary<string, AttributeValue>() {
+                {
+                    "ID",
+                    new AttributeValue {
+                        S = request?.PathParameters?.GetValueOrDefault("id")
+                    }
+                }
+            }
+        };
 
-        var getItemResponse = await _client.GetItemAsync(getAction);
+        try
+        {
+            var getItemResponse = await _client.GetItemAsync(getAction);
 
-        context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
+            context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
 
-        var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
+            var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
 
-        var data = _dynamoDbContext.FromDocument<Data>(document);
+            var data = _dynamoDbContext.FromDocument<Data>(document);
 
-        context.Logger.LogInformation("Got Data {Data}", data);
+            context.Logger.LogInformation("Got Data {Data}", data);
 
-        return data;
+            return data;
+        }
+        catch (Exception exception)
+        {
+            context.Logger.LogError(exception, "Error");
+        }
+
+        return null;
     }
 }
