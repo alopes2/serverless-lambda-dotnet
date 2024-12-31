@@ -53,4 +53,13 @@ data "aws_iam_policy_document" "process_data_policies" {
 
     resources = ["arn:aws:logs:*:*:*"]
   }
+  statement {
+    effect = "Allow"
+    sid    = "GetItemData"
+    actions = [
+      "dynamodb:GetItem"
+    ]
+
+    resources = [aws_dynamodb_table.data.arn]
+  }
 }
