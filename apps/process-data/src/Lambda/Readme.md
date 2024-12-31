@@ -38,12 +38,12 @@ If already installed check if new version is available.
 
 Execute unit tests
 ```
-    cd "process-data/test/process-data.Tests"
+    cd "Lambda/test/Lambda.Tests"
     dotnet test
 ```
 
 Deploy function to AWS Lambda
 ```
-    cd "process-data/src/process-data"
+    cd "Lambda/src/Lambda"
     dotnet lambda deploy-function
 ```
