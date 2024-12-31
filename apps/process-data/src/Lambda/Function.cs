@@ -18,6 +18,6 @@ public class Function
     {
         context.Logger.LogInformation("Got request {Request}", request);
 
-        return request?.PathParameters.GetValueOrDefault("id") ?? "Nothing found";
+        return request?.PathParameters?.GetValueOrDefault("id") ?? "Nothing found";
     }
 }
