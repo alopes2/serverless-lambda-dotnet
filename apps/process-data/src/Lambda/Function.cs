@@ -18,7 +18,7 @@ public class Function
 
     public Function()
     {
-        _client = new AmazonDynamoDBClient();
+        _client = new AmazonDynamoDBClient(new AmazonDynamoDBConfig());
         _dynamoDbContext = new DynamoDBContext(_client);
     }
 
