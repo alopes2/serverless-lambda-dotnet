@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using System.Text.Json;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
@@ -18,7 +19,7 @@ public class Function
 
     public Function()
     {
-        _client = new AmazonDynamoDBClient(new AmazonDynamoDBConfig());
+        _client = new AmazonDynamoDBClient();
         _dynamoDbContext = new DynamoDBContext(_client);
     }
 
@@ -47,15 +48,21 @@ public class Function
 
         try
         {
-            context.Logger.LogInformation("Sending GET request for ID {Request} on table {tableName}", id, tableName);
+            context.Logger.LogInformation("Sending GET request for ID {Request} on table {tableName", id, tableName);
 
             var getItemResponse = await _client.GetItemAsync(getAction);
+
+            // Convert the response from dynamodb to Data type
+
+
 
             context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
 
             var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
 
-            var data = _dynamoDbContext.FromDocument<Data>(document);
+            context.Logger.LogInformation("Got document response {Response}", document.ToJson());
+
+            var data = JsonSerializer.Deserialize<Data>(document.ToJson());
 
             context.Logger.LogInformation("Got Data {Data}", data);
 
