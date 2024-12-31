@@ -13,7 +13,7 @@ resource "aws_iam_role_policy" "process_data_policies" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  filename      = data.archive_file.lambda.output_path
+  filename      = data.archive_file.dotnet_lambda_archive.output_path
   function_name = local.process_data_lambda_name
   role          = aws_iam_role.process_data.arn
   handler       = "index.handler"
