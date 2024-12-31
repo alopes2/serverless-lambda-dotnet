@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
@@ -31,18 +32,19 @@ public class Function
         context.Logger.LogInformation("Got request {Request}", request);
 
         var getAction = new GetItemRequest(tableName, new Dictionary<string, AttributeValue>() {
-            {"ID", new AttributeValue {
-                S = request?.PathParameters?.GetValueOrDefault("id")
+            {
+                "ID",
+                new AttributeValue {
+                    S = request?.PathParameters?.GetValueOrDefault("id")
                  }
              }
         });
 
         var getItemResponse = await _client.GetItemAsync(getAction);
 
-
         context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
 
-        var document = _dynamoDbContext.ToDocument(getItemResponse?.Item);
+        var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
 
         var data = _dynamoDbContext.FromDocument<Data>(document);
 
