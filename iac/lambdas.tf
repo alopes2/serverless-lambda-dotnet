@@ -18,6 +18,7 @@ resource "aws_lambda_function" "lambda" {
   role          = aws_iam_role.process_data.arn
   handler       = "Lambda::Lambda.Function::FunctionHandler"
   runtime       = "dotnet8"
+  memory_size   = 512
 }
 
 data "archive_file" "dotnet_lambda_archive" {

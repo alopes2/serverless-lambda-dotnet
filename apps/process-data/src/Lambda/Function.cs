@@ -15,12 +15,10 @@ public class Function
 
     private const string tableName = "dotnet_data";
     private AmazonDynamoDBClient _client;
-    private DynamoDBContext _dynamoDbContext;
 
     public Function()
     {
         _client = new AmazonDynamoDBClient();
-        _dynamoDbContext = new DynamoDBContext(_client);
     }
 
     /// <summary>
@@ -48,23 +46,13 @@ public class Function
 
         try
         {
-            context.Logger.LogInformation("Sending GET request for ID {Request} on table {tableName", id, tableName);
-
             var getItemResponse = await _client.GetItemAsync(getAction);
-
-            // Convert the response from dynamodb to Data type
-
-
-
-            context.Logger.LogInformation("Got DynamoDB response {Response}", getItemResponse?.Item);
 
             var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
 
             context.Logger.LogInformation("Got document response {Response}", document.ToJson());
 
             var data = JsonSerializer.Deserialize<Data>(document.ToJson());
-
-            context.Logger.LogInformation("Got Data {Data}", data);
 
             return data;
         }
