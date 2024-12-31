@@ -12,7 +12,7 @@ namespace Lambda;
 public class Function
 {
 
-    private const string tableName = "ProductCatalog";
+    private const string tableName = "dotnet_data";
     private AmazonDynamoDBClient _client;
     private DynamoDBContext _dynamoDbContext;
     public Function()
