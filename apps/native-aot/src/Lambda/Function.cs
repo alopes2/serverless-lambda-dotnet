@@ -30,7 +30,7 @@ public class Function
     /// </summary>
     private static async Task Main()
     {
-        Func<string, ILambdaContext, string> handler = FunctionHandler;
+        Func<string, ILambdaContext, string> handler = new Function().FunctionHandler;
         await LambdaBootstrapBuilder.Create(handler, new SourceGeneratorLambdaJsonSerializer<LambdaFunctionJsonSerializerContext>())
             .Build()
             .RunAsync();
@@ -56,13 +56,13 @@ public class Function
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    public static string FunctionHandler(string input, ILambdaContext context)
+    public string FunctionHandler(string input, ILambdaContext context)
     {
         // Create an instance to access instance methods
-        var functionInstance = new Function();
+        // var functionInstance = new Function();
 
         // Delegate to an instance method for testing purposes
-        var result = functionInstance.ProcessInput(input);
+        var result = ProcessInput(input);
 
         return result;
     }
