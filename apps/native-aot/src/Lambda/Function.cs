@@ -30,76 +30,11 @@ public class Function
     /// </summary>
     private static async Task Main()
     {
-        Func<string, ILambdaContext, string> handler = new Function().FunctionHandler;
+        Func<Event, ILambdaContext, Task<Data?>> handler = new Handler().HandleAsync;
         await LambdaBootstrapBuilder.Create(handler, new SourceGeneratorLambdaJsonSerializer<LambdaFunctionJsonSerializerContext>())
             .Build()
             .RunAsync();
     }
-
-    /// <summary>
-    /// A simple function that takes a string and does a ToUpper.
-    ///
-    /// To use this handler to respond to an AWS event, reference the appropriate package from 
-    /// https://github.com/aws/aws-lambda-dotnet#events
-    /// and change the string input parameter to the desired event type. When the event type
-    /// is changed, the handler type registered in the main method needs to be updated and the LambdaFunctionJsonSerializerContext 
-    /// defined below will need the JsonSerializable updated. If the return type and event type are different then the 
-    /// LambdaFunctionJsonSerializerContext must have two JsonSerializable attributes, one for each type.
-    ///
-    // When using Native AOT extra testing with the deployed Lambda functions is required to ensure
-    // the libraries used in the Lambda function work correctly with Native AOT. If a runtime 
-    // error occurs about missing types or methods the most likely solution will be to remove references to trim-unsafe 
-    // code or configure trimming options. This sample defaults to partial TrimMode because currently the AWS 
-    // SDK for .NET does not support trimming. This will result in a larger executable size, and still does not 
-    // guarantee runtime trimming errors won't be hit. 
-    /// </summary>
-    /// <param name="input">The event for the Lambda function handler to process.</param>
-    /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
-    /// <returns></returns>
-    public string FunctionHandler(string input, ILambdaContext context)
-    {
-        // Create an instance to access instance methods
-        // var functionInstance = new Function();
-
-        // Delegate to an instance method for testing purposes
-        var result = ProcessInput(input);
-
-        return result;
-    }
-
-    // Instance method for processing input, allowing easier testing
-    private string ProcessInput(string input)
-    {
-        return input.ToUpper();
-    }
-
-    // private async Task<string?> GetItemFromDynamoDB(string tableName, string key)
-    // {
-    //     try
-    //     {
-    //         var request = new GetItemRequest
-    //         {
-    //             TableName = tableName,
-    //             Key = new Dictionary<string, AttributeValue>
-    //             {
-    //                 { "PrimaryKey", new AttributeValue { S = key } }
-    //             }
-    //         };
-
-    //         var response = await _dynamoDbClient.GetItemAsync(request);
-
-    //         if (response.Item != null && response.Item.ContainsKey("YourAttributeName"))
-    //         {
-    //             return response.Item["YourAttributeName"].S;
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         Console.WriteLine($"Error accessing DynamoDB: {ex.Message}");
-    //     }
-
-    //     return null;
-    // }
 }
 
 
@@ -108,7 +43,8 @@ public class Function
 /// There must be a JsonSerializable attribute for each type used as the input and return type or a runtime error will occur 
 /// from the JSON serializer unable to find the serialization information for unknown types.
 /// </summary>
-[JsonSerializable(typeof(string))]
+[JsonSerializable(typeof(Event))]
+[JsonSerializable(typeof(Data))]
 public partial class LambdaFunctionJsonSerializerContext : JsonSerializerContext
 {
     // By using this partial class derived from JsonSerializerContext, we can generate reflection free JSON Serializer code at compile time
