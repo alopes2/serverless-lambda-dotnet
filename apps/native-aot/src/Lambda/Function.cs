@@ -1,5 +1,3 @@
-// using Amazon.DynamoDBv2;
-// using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
@@ -9,20 +7,6 @@ namespace Lambda;
 
 public class Function
 {
-    // private static IAmazonDynamoDB _dynamoDbClient;
-
-    // Default constructor for production
-    public Function()
-    {
-
-    }
-
-    // Constructor for testing (dependency injection)
-    // public Function(IAmazonDynamoDB dynamoDbClient)
-    // {
-    //     _dynamoDbClient = dynamoDbClient;
-    // }
-
     /// <summary>
     /// The main entry point for the Lambda function. The main function is called once during the Lambda init phase. It
     /// initializes the .NET Lambda runtime client passing in the function handler to invoke for each Lambda event and
