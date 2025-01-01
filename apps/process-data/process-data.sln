@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B86DB316-6D6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lambda", "src\Lambda\Lambda.csproj", "{07420B0E-3CB8-40F5-9219-08E26D52E6B1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BA55CCC1-3B39-4F5F-88ED-659A15F5BDD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lambda.Tests", "test\Lambda.Tests\Lambda.Tests.csproj", "{CFEA9014-DAEC-432C-A1EF-94C0387591C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +24,13 @@ Global
 		{07420B0E-3CB8-40F5-9219-08E26D52E6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07420B0E-3CB8-40F5-9219-08E26D52E6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07420B0E-3CB8-40F5-9219-08E26D52E6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFEA9014-DAEC-432C-A1EF-94C0387591C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFEA9014-DAEC-432C-A1EF-94C0387591C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFEA9014-DAEC-432C-A1EF-94C0387591C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFEA9014-DAEC-432C-A1EF-94C0387591C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{07420B0E-3CB8-40F5-9219-08E26D52E6B1} = {B86DB316-6D6A-4865-B4CE-D3D719D5C216}
+		{CFEA9014-DAEC-432C-A1EF-94C0387591C6} = {BA55CCC1-3B39-4F5F-88ED-659A15F5BDD2}
 	EndGlobalSection
 EndGlobal
