@@ -11,7 +11,7 @@ public class FunctionTest
     {
         // Invoke the lambda function and confirm the string was upper cased.
         var context = new TestLambdaContext();
-        var upperCase = Function.FunctionHandler("hello world", context);
+        var upperCase = new Function().FunctionHandler("hello world", context);
 
         Assert.Equal("HELLO WORLD", upperCase);
     }
