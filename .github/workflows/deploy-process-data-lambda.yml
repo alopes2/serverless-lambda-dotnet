@@ -36,7 +36,7 @@ jobs:
         run: dotnet test
 
       - name: Publish code
-        run: dotnet publish -c Release -r linux-x64 -p PublishDir=../../publish
+        run: dotnet publish ./src/Lambda/Lambda.csproj -c Release -r linux-x64 -p PublishDir=../../publish
 
       - name: Configure AWS Credentials Action For GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
