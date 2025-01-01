@@ -1,3 +1,5 @@
+// using Amazon.DynamoDBv2;
+// using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
@@ -7,6 +9,20 @@ namespace Lambda;
 
 public class Function
 {
+    // private static IAmazonDynamoDB _dynamoDbClient;
+
+    // Default constructor for production
+    public Function()
+    {
+
+    }
+
+    // Constructor for testing (dependency injection)
+    // public Function(IAmazonDynamoDB dynamoDbClient)
+    // {
+    //     _dynamoDbClient = dynamoDbClient;
+    // }
+
     /// <summary>
     /// The main entry point for the Lambda function. The main function is called once during the Lambda init phase. It
     /// initializes the .NET Lambda runtime client passing in the function handler to invoke for each Lambda event and
@@ -42,9 +58,50 @@ public class Function
     /// <returns></returns>
     public static string FunctionHandler(string input, ILambdaContext context)
     {
+        // Create an instance to access instance methods
+        var functionInstance = new Function();
+
+        // Delegate to an instance method for testing purposes
+        var result = functionInstance.ProcessInput(input);
+
+        return result;
+    }
+
+    // Instance method for processing input, allowing easier testing
+    private string ProcessInput(string input)
+    {
         return input.ToUpper();
     }
+
+    // private async Task<string?> GetItemFromDynamoDB(string tableName, string key)
+    // {
+    //     try
+    //     {
+    //         var request = new GetItemRequest
+    //         {
+    //             TableName = tableName,
+    //             Key = new Dictionary<string, AttributeValue>
+    //             {
+    //                 { "PrimaryKey", new AttributeValue { S = key } }
+    //             }
+    //         };
+
+    //         var response = await _dynamoDbClient.GetItemAsync(request);
+
+    //         if (response.Item != null && response.Item.ContainsKey("YourAttributeName"))
+    //         {
+    //             return response.Item["YourAttributeName"].S;
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine($"Error accessing DynamoDB: {ex.Message}");
+    //     }
+
+    //     return null;
+    // }
 }
+
 
 /// <summary>
 /// This class is used to register the input event and return type for the FunctionHandler method with the System.Text.Json source generator.
