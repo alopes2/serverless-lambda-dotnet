@@ -1,0 +1,52 @@
+name: Deploy Native AOT Lambda
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/native-aot/**/*
+      - deploy-native-aot-lambda.yml
+
+defaults:
+  run:
+    working-directory: apps/native-aot/
+
+jobs:
+  terraform:
+    name: 'Deploy native-aot Lambda'
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8
+
+      - name: Install packages
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build
+
+      - name: Test
+        run: dotnet test
+
+      - name: Publish code
+        run: dotnet publish ./src/Lambda/Lambda.csproj -c Release -r linux-x64 -p PublishDir=../../publish
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Zip build
+        run: zip -r -j main.zip ./publish
+
+      - name: Update Lambda
+        run: aws lambda update-function-code --function-name=native-aot --zip-file=fileb://main.zip
