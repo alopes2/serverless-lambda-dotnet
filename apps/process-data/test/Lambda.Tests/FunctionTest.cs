@@ -30,13 +30,13 @@ public class FunctionTest
 
         var context = new TestLambdaContext() { Logger = new TestLambdaLogger() };
 
-        var request = new Request(new Dictionary<string, string> {
+        var @event = new Event(new Dictionary<string, string> {
             {
                 "id", expectedID
             }
         });
 
-        var response = await function.FunctionHandler(request, context);
+        var response = await function.FunctionHandler(@event, context);
 
         Assert.Equal(expectedID, response?.ID);
     }

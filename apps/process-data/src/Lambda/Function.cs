@@ -29,9 +29,9 @@ public class Function
     /// <param name="input">The event for the Lambda function handler to process.</param>
     /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
     /// <returns></returns>
-    public async Task<Data?> FunctionHandler(Request request, ILambdaContext context)
+    public async Task<Data?> FunctionHandler(Event @event, ILambdaContext context)
     {
-        var id = request?.PathParameters?.GetValueOrDefault("id");
+        var id = @event?.PathParameters?.GetValueOrDefault("id");
 
         var getAction = new GetItemRequest
         {

@@ -87,7 +87,7 @@ resource "aws_lambda_function" "native_aot_lambda" {
   filename      = data.archive_file.dotnet_lambda_archive.output_path
   function_name = local.native_aot_lambda_name
   role          = aws_iam_role.native_aot.arn
-  handler       = "Lambda::Lambda.Function::FunctionHandler"
+  handler       = "Lambda" # The handler for AOT is only the assembly (the name in the project file)
   runtime       = "dotnet8"
   memory_size   = 512
   timeout       = 30
