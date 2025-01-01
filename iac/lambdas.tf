@@ -10,7 +10,7 @@ resource "aws_iam_role" "process_data" {
 
 resource "aws_iam_role_policy" "process_data_policies" {
   role   = aws_iam_role.process_data.name
-  policy = data.aws_iam_policy_document.process_data_policies.json
+  policy = data.aws_iam_policy_document.policies.json
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "process_data_policies" {
+data "aws_iam_policy_document" "policies" {
   statement {
     effect = "Allow"
     sid    = "LogToCloudwatch"
@@ -80,7 +80,7 @@ resource "aws_iam_role" "native_aot" {
 
 resource "aws_iam_role_policy" "native_aot_policies" {
   role   = aws_iam_role.native_aot.name
-  policy = data.aws_iam_policy_document.native_aot_policies.json
+  policy = data.aws_iam_policy_document.policies.json
 }
 
 resource "aws_lambda_function" "native_aot_lambda" {
@@ -105,19 +105,5 @@ data "aws_iam_policy_document" "native_aot_assume_role" {
 
     actions = ["sts:AssumeRole"]
 
-  }
-}
-
-data "aws_iam_policy_document" "native_aot_policies" {
-  statement {
-    effect = "Allow"
-    sid    = "LogToCloudwatch"
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-    ]
-
-    resources = ["arn:aws:logs:*:*:*"]
   }
 }
