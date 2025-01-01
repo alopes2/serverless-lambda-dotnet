@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "process_data_policies" {
 
 resource "aws_iam_role" "native_aot" {
   name               = "${local.native_aot_lambda_name}-lambda-role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.native_aot_assume_role.json
 }
 
 resource "aws_iam_role_policy" "native_aot_policies" {
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy" "native_aot_policies" {
   policy = data.aws_iam_policy_document.native_aot_policies.json
 }
 
-resource "aws_lambda_function" "lambda" {
+resource "aws_lambda_function" "native_aot_lambda" {
   filename      = data.archive_file.dotnet_lambda_archive.output_path
   function_name = local.native_aot_lambda_name
   role          = aws_iam_role.native_aot.arn
@@ -93,13 +93,7 @@ resource "aws_lambda_function" "lambda" {
   timeout       = 30
 }
 
-data "archive_file" "dotnet_lambda_archive" {
-  type        = "zip"
-  source_dir  = "dotnet_lambda_default"
-  output_path = "dotnet_lambda_function_payload.zip"
-}
-
-data "aws_iam_policy_document" "assume_role" {
+data "aws_iam_policy_document" "native_aot_assume_role" {
 
   statement {
     effect = "Allow"
