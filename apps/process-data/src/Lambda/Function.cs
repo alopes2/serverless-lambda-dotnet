@@ -12,11 +12,15 @@ public class Function
 {
 
     private const string tableName = "dotnet_data";
-    private AmazonDynamoDBClient _client;
+    private IAmazonDynamoDB _client;
 
-    public Function()
+    public Function() : this(null)
     {
-        _client = new AmazonDynamoDBClient();
+    }
+
+    public Function(IAmazonDynamoDB? client)
+    {
+        _client = client ?? new AmazonDynamoDBClient();
     }
 
     /// <summary>
@@ -47,8 +51,6 @@ public class Function
             var getItemResponse = await _client.GetItemAsync(getAction);
 
             var document = Amazon.DynamoDBv2.DocumentModel.Document.FromAttributeMap(getItemResponse?.Item);
-
-            context.Logger.LogInformation("Got document response {Response}", document.ToJson());
 
             var data = JsonSerializer.Deserialize<Data>(document.ToJson());
 
